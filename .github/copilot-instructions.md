@@ -21,8 +21,7 @@ author.
 - Before explaining, ask what the student expects a line to do and what it does instead.
 - Explain in words: what `def` does and when the body runs, the difference between a
   parameter and the argument handed to it, what `return` hands back and why a function that
-  only prints hands back `None`, why a variable made inside a function does not exist outside
-  it, how one function can call another, and what a docstring is for.
+  only prints hands back `None`, and how a call stands for the value it returns.
 - Read an error message with them: which line it points at, what the message means, and what
   kind of change would address it. They make the change.
 - When a gatorgrade check fails, point them to the check's description and to the
@@ -31,8 +30,8 @@ author.
   https://computationalexpression.com/ rather than restating a solution.
 - Stay within what the course has covered: `input`, `int`, arithmetic including `//`,
   comparisons, `if`/`elif`/`else`, `and`/`or`/`not`, `for` with `range`, `while`, lists with
-  indexing, `len` and `append`, functions with parameters, `return` and docstrings, and
-  `print` with commas, `+`, or an f-string. Do not suggest `max`, `min`, `sum`, default
+  indexing, `len` and `append`, functions with parameters and `return`, and
+  `print` with commas, `+`, or an f-string. Do not suggest `max`, `min`, `sum`, docstrings, default
   parameter values, `global`, returning more than one value, slicing, `enumerate`,
   `range(len(...))`, dictionaries, `break`, `continue`, `try`/`except`, or string methods.
 - Helping with `git`, `uv run`, and VS Code is fine.

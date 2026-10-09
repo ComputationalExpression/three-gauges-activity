@@ -2,7 +2,7 @@
 
 The function checks call each of your functions directly, the way main does,
 and look at the value it returns. A function that prints its answer instead of
-returning it hands back None.
+returning it hands back None, and the functions themselves print nothing.
 
 The program check runs main() and reads the report lines. They are matched
 loosely: any amount of whitespace, any letter case, and the colon is
@@ -31,13 +31,17 @@ def function(name):
     return found
 
 
-def expect_return(name, args, want):
-    """Call the function `name` with `args` and check what it returns."""
+def expect_return(capsys, name, args, want):
+    """Call the function `name` with `args` and check what it returns and prints."""
     got = function(name)(*args)
     shown = ", ".join(repr(arg) for arg in args)
+    printed = capsys.readouterr().out.strip()
     if got is None:
         raise AssertionError(f"{name}({shown}) returned None: end the function with return, not print")
     assert got == want, f"{name}({shown}) returned {got!r}, expected {want!r}"
+    assert printed == "", (
+        f"{name}({shown}) printed {printed!r}: return the answer and let main print it"
+    )
 
 
 def values(out, label):
@@ -95,37 +99,23 @@ def test_program_prints_the_same_report(capsys):
         )
 
 
-def test_highest_returns_the_largest():
+def test_highest_returns_the_largest(capsys):
     # Largest in the middle, at the end, and at the very start.
-    expect_return("highest", ([12, 20, 7],), 20)
-    expect_return("highest", ([12, 20, 41],), 41)
-    expect_return("highest", ([55, 20, 41],), 55)
+    expect_return(capsys, "highest", ([12, 20, 7],), 20)
+    expect_return(capsys, "highest", ([12, 20, 41],), 41)
+    expect_return(capsys, "highest", ([55, 20, 41],), 55)
 
 
-def test_count_at_or_above_returns_the_count():
-    expect_return("count_at_or_above", ([10, 20, 30], 20), 2)
+def test_count_at_or_above_returns_the_count(capsys):
+    expect_return(capsys, "count_at_or_above", ([10, 20, 30], 20), 2)
     # A reading exactly at the level counts.
-    expect_return("count_at_or_above", ([10, 20, 30], 30), 1)
-    expect_return("count_at_or_above", ([10, 20, 30], 10), 3)
+    expect_return(capsys, "count_at_or_above", ([10, 20, 30], 30), 1)
+    expect_return(capsys, "count_at_or_above", ([10, 20, 30], 10), 3)
     # Zero is a number, not None: start the count at 0 and return it.
-    expect_return("count_at_or_above", ([10, 20, 30], 31), 0)
+    expect_return(capsys, "count_at_or_above", ([10, 20, 30], 31), 0)
 
 
-def test_average_returns_a_whole_number():
+def test_average_returns_a_whole_number(capsys):
     # 305 // 7 is 43, where 305 / 7 would be 43.571...
-    expect_return("average", ([31, 34, 52, 68, 45, 39, 36],), 43)
-    expect_return("average", ([12, 20, 7],), 13)
-
-
-def test_report_prints_one_gauge(capsys):
-    function("report")("Test Gauge", [12, 20, 7], 15)
-    out, _ = capsys.readouterr()
-    call = 'report("Test Gauge", [12, 20, 7], 15)'
-    for label, want in [
-        ("GAUGE", "TEST GAUGE"),
-        ("Highest", "20"),
-        ("Reached watch", "1"),
-        ("Average", "13"),
-    ]:
-        got = values(out, label)
-        assert got == [want], f'{call} printed {got} on its "{label}" line, expected {want}'
+    expect_return(capsys, "average", ([31, 34, 52, 68, 45, 39, 36],), 43)
+    expect_return(capsys, "average", ([12, 20, 7],), 13)

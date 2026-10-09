@@ -3,8 +3,8 @@
 CMPSC 100: Computational Expression, Activity 6
 
 A week of readings from three stream gauges near Meadville, reported the same
-way for each gauge. This program works, but it repeats the same code three
-times. Move each calculation into a function, written once and used three
+way for each gauge. This program works, but it repeats the same loops three
+times. Move each calculation into a function, written once and called three
 times, without changing what the program prints.
 
 Author: TODO
@@ -24,13 +24,7 @@ cussewago = [12, 15, 22, 26, 19, 17, 14]
 # TODO 3: write a function `average(readings)` that returns the total of the
 # readings divided by how many there are, using //
 
-# TODO 4: write a function `report(gauge, readings, watch)` that prints the
-# four report lines for one gauge: the line of "=", "GAUGE: {gauge}", then
-# Highest, Reached watch, and Average. It calls the three functions above
-# instead of looping itself
-
-# TODO 5: give every function a docstring saying what it returns or prints,
-# including main
+# Each function returns its answer and prints nothing. main does the printing
 
 
 def main():
@@ -43,8 +37,10 @@ def main():
 
     print("Field notes by", name)
 
-    # TODO 6: replace each of the three gauge blocks below with one call to
-    # report, such as report("French Creek at Meadville", meadville, watch)
+    # TODO 4: in each gauge block below, delete the three loops and the
+    # variables they fill, and print what your functions return instead, such
+    # as print("Highest:", highest(meadville)). Keep the two lines that print
+    # "=" and the gauge's name
 
     # French Creek at Meadville
     print("=" * 50)
@@ -103,7 +99,7 @@ def main():
     print("Average:", total // len(cussewago))
     cussewago_peak = largest
 
-    # TODO 7: replace these comparisons with one call to highest, handed a
+    # TODO 5: replace these comparisons with one call to highest, handed a
     # list of the three gauges' highest readings
     peak = meadville_peak
     if saegertown_peak > peak:
