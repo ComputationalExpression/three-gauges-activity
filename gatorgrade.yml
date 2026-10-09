@@ -1,0 +1,53 @@
+# Nine checks: four call your functions, one runs your program, three read it as Python, and one
+# reads its text. The function checks call highest, count_at_or_above, average and report
+# directly, with readings of their own, so each function has to take its readings as a parameter
+# and return its answer. The program check runs main and reads only the report lines, so it
+# forgives extra spaces, letter case, and a missing colon.
+
+- description: "[RUN] The program prints the same report as before: one Highest, Reached watch and Average per gauge, then Peak"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_gauges.py::test_program_prints_the_same_report
+
+- description: "[FUNCTION] highest(readings) returns the largest reading: start at readings\\[0\\], and return the result rather than printing it"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_gauges.py::test_highest_returns_the_largest
+
+- description: "[FUNCTION] count_at_or_above(readings, level) returns how many readings are >= level, and 0 when none are"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_gauges.py::test_count_at_or_above_returns_the_count
+
+- description: "[FUNCTION] average(readings) returns a whole number: divide the total by len(readings) with //"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_gauges.py::test_average_returns_a_whole_number
+
+- description: "[FUNCTION] report(gauge, readings, watch) prints GAUGE, Highest, Reached watch and Average for the readings it is handed"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_gauges.py::test_report_prints_one_gauge
+
+- description: "[CODE] report calls highest, count_at_or_above and average, and has no loop of its own"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_structure.py::test_report_calls_the_three_functions
+
+- description: "[CODE] main has no loops left and calls report once per gauge"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_structure.py::test_main_has_no_loops_and_reports_every_gauge
+
+- description: "[CODE] Every function has a docstring, main included: a string in triple quotes on its first line"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_structure.py::test_every_function_has_a_docstring
+
+- src/main.py:
+  - description: "[CODE] No TODO markers remain: delete each TODO comment once its code is written, including Author"
+    check: MatchFileFragment
+    options:
+      fragment: TODO
+      count: 0
+      exact: true

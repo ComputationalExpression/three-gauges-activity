@@ -1,0 +1,19 @@
+[project]
+name = "activity-06-three-gauges"
+version = "1.0.0"
+requires-python = ">=3.11"
+dependencies = [
+    "gatorgrade",
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src"
+]
+testpaths = [
+    "tests"
+]
+filterwarnings = [
+    "ignore::pytest.PytestAssertRewriteWarning",
+]
