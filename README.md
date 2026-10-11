@@ -6,9 +6,10 @@
 |Due |Monday, October 26, 9:50am |
 |Progress |[![Grade](../../actions/workflows/main.yml/badge.svg?branch=main)](../../actions/workflows/main.yml) |
 
-Cussewago Creek meets French Creek in Meadville. This program reports a week of readings from
-three gauges: French Creek at Meadville, French Creek upstream at Saegertown, and Cussewago
-Creek. It already works, but it repeats the same loops three times, once per gauge. Your job is
+Cussewago Creek meets French Creek in Meadville. This program reads a week of readings for
+three gauges, French Creek at Meadville, French Creek upstream at Saegertown, and Cussewago
+Creek, from one CSV file each, and reports on them. It already works, but it repeats the same
+loops three times, once per gauge. Your job is
 to **refactor** it, which means changing how the code is organized without changing what it
 prints: move each calculation into a function, written once and called three times.
 
@@ -27,18 +28,34 @@ defects.
 
 Specifically, by the end of this activity you should be able to:
 
+* read the rows of a CSV file into a list
 * define a function with parameters
 * return a value from a function, and use the value it returns
 * tell `return` apart from `print`
 * replace repeated code with calls to one function
 
+## The data files
+
+Each gauge's readings are in its own CSV file in `data/`: a header line, `date,level`, then
+one line per day with the date and the level separated by a comma.
+
+```text
+date,level
+2026-06-01,31
+2026-06-02,34
+```
+
+The readings are sample data. Run the program from the top folder of this repository, so that
+`data/meadville.csv` is found.
+
 ## The functions
 
-Write these three functions above `main`. The names and parameters must match exactly, because
+Write these four functions above `main`. The names and parameters must match exactly, because
 the automated checks call each one directly with readings of their own.
 
 |Function |What it does |
 |:--------|:------------|
+|`read_readings(filename)` |Returns the list of levels in that CSV file, each one converted with `int` |
 |`highest(readings)` |Returns the largest reading in the list |
 |`count_at_or_above(readings, level)` |Returns how many readings are greater than or equal to `level` |
 |`average(readings)` |Returns the total of the readings divided by how many there are, using `//` |
@@ -46,8 +63,9 @@ the automated checks call each one directly with readings of their own.
 Each function **returns** its answer and prints nothing; `main` does the printing. Each one
 works only with its parameters, never with `meadville`, `saegertown` or `cussewago` by name.
 
-Then, in each gauge block in `main`, delete the three loops and print what your functions return
-instead, such as `print("Highest:", highest(meadville))`. Replace the `peak` comparisons with one
+Then, in each gauge block in `main`, replace the reading loop with one call such as
+`meadville = read_readings("data/meadville.csv")`, delete the other three loops, and print what
+your functions return instead, such as `print("Highest:", highest(meadville))`. Replace the `peak` comparisons with one
 call to `highest`, handed a list of the three gauges' highest readings. When you are done, `main`
 has no loops in it.
 
@@ -82,8 +100,8 @@ Average: 17
 Peak: 68
 ```
 
-The readings are sample data. The checks forgive extra spaces and letter case, and any of the
-three ways to print a value passes.
+The checks run your program against data files of their own, forgive extra spaces and letter
+case, and accept any of the three ways to print a value.
 
 ## Getting started
 

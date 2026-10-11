@@ -4,7 +4,9 @@ The function checks call each of your functions directly, the way main does,
 and look at the value it returns. A function that prints its answer instead of
 returning it hands back None, and the functions themselves print nothing.
 
-The program check runs main() and reads the report lines. They are matched
+The program check runs main() in a scratch folder holding its own
+data/meadville.csv, data/saegertown.csv and data/cussewago.csv, and reads the
+report lines. They are matched
 loosely: any amount of whitespace, any letter case, and the colon is
 optional, so `print("Highest:", x)`, `print("Highest: " + str(x))` and
 `print(f"Highest: {x}")` all read the same.
@@ -60,32 +62,35 @@ def expected_report(readings, watch):
     )
 
 
-def run(capsys, watch, lists=None):
-    """Run main() once, optionally with different readings for each gauge."""
-    original = {gauge: getattr(main, gauge) for gauge in GAUGES}
-    if lists is not None:
-        for gauge, readings in zip(GAUGES, lists):
-            setattr(main, gauge, list(readings))
-    used = [list(getattr(main, gauge)) for gauge in GAUGES]
-    try:
-        with patch("builtins.input", side_effect=["JJ", str(watch)]):
-            main.main()
-    finally:
-        for gauge, readings in original.items():
-            setattr(main, gauge, readings)
+def write_gauge(path, readings):
+    """Write one gauge's CSV file: a header line, then one date and level per line."""
+    lines = ["date,level"] + [f"2026-06-{day:02d},{level}" for day, level in enumerate(readings, 1)]
+    path.write_text("\n".join(lines) + "\n")
+
+
+def run(capsys, monkeypatch, tmp_path, watch, lists):
+    """Run main() once in a scratch folder whose data/ files hold `lists`."""
+    (tmp_path / "data").mkdir()
+    for gauge, readings in zip(GAUGES, lists):
+        write_gauge(tmp_path / "data" / f"{gauge}.csv", readings)
+    monkeypatch.chdir(tmp_path)
+    with patch("builtins.input", side_effect=["JJ", str(watch)]):
+        main.main()
     out, err = capsys.readouterr()
     assert err == "", "the program wrote to the error stream:\n" + err
-    return out, used
+    return out
 
 
-def test_program_prints_the_same_report(capsys):
-    for watch, lists in [
-        (40, None),
+def test_program_prints_the_same_report(capsys, monkeypatch, tmp_path):
+    for case, (watch, lists) in enumerate([
+        (40, [[31, 34, 52, 68, 45, 39, 36], [28, 30, 41, 57, 49, 35, 33], [12, 15, 22, 26, 19, 17, 14]]),
         (20, [[5, 9, 3], [40, 20, 10, 30], [21, 22]]),
-    ]:
-        out, used = run(capsys, watch, lists)
-        context = f"watch={watch}, readings: {used}"
-        want = [expected_report(readings, watch) for readings in used]
+    ]):
+        folder = tmp_path / f"run{case}"
+        folder.mkdir()
+        out = run(capsys, monkeypatch, folder, watch, lists)
+        context = f"watch={watch}, readings in the data files: {lists}"
+        want = [expected_report(readings, watch) for readings in lists]
         for position, label in enumerate(["Highest", "Reached watch", "Average"]):
             expected = [str(report[position]) for report in want]
             got = values(out, label)
@@ -93,10 +98,26 @@ def test_program_prints_the_same_report(capsys):
                 f'the "{label}" lines said {got}, expected {expected}, one per gauge '
                 f"in the order Meadville, Saegertown, Cussewago ({context})"
             )
-        peak = [str(max(max(readings) for readings in used))]
+        peak = [str(max(max(readings) for readings in lists))]
         assert values(out, "Peak") == peak, (
             f'the "Peak" line said {values(out, "Peak")}, expected {peak} ({context})'
         )
+
+
+def test_read_readings_returns_the_levels(capsys, tmp_path):
+    for readings in ([12, 20, 7], [40, 41, 42, 43, 44]):
+        path = tmp_path / f"gauge{len(readings)}.csv"
+        write_gauge(path, readings)
+        got = function("read_readings")(str(path))
+        printed = capsys.readouterr().out.strip()
+        call = f'read_readings("{path.name}") on a file of {len(readings)} levels'
+        if got is None:
+            raise AssertionError(f"{call} returned None: end the function with return, not print")
+        assert got == readings, (
+            f"{call} returned {got!r}, expected {readings!r}: skip the header line, "
+            "and convert each level with int"
+        )
+        assert printed == "", f"{call} printed {printed!r}: return the list and let main print"
 
 
 def test_highest_returns_the_largest(capsys):

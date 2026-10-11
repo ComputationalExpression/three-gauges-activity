@@ -1,13 +1,18 @@
-# Seven checks: three call your functions, one runs your program, two read it as Python, and one
-# reads its text. The function checks call highest, count_at_or_above and average directly, with
-# readings of their own, so each function has to take its readings as a parameter and return its
-# answer. The program check runs main and reads only the report lines, so it forgives extra
-# spaces, letter case, and a missing colon.
+# Eight checks: four call your functions, one runs your program, two read it as Python, and one
+# reads its text. The function checks call read_readings, highest, count_at_or_above and average
+# directly, with files and readings of their own, so each function has to take its input as a
+# parameter and return its answer. The program check runs main against its own data files and
+# reads only the report lines, so it forgives extra spaces, letter case, and a missing colon.
 
 - description: "[RUN] The program prints the same report as before: one Highest, Reached watch and Average per gauge, then Peak"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_gauges.py::test_program_prints_the_same_report
+
+- description: "[FUNCTION] read_readings(filename) returns the levels in that CSV file as whole numbers: skip the header line, then int(parts\\[1\\]) on every line"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_gauges.py::test_read_readings_returns_the_levels
 
 - description: "[FUNCTION] highest(readings) returns the largest reading and prints nothing: start at readings\\[0\\], and end with return"
   check: ExecuteCommand
@@ -24,12 +29,12 @@
   options:
     command: uv run pytest tests/test_gauges.py::test_average_returns_a_whole_number
 
-- description: "[CODE] main has no loops left: each loop lives in one of the three functions"
+- description: "[CODE] main has no loops left: each loop lives in one of the four functions"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_main_has_no_loops
 
-- description: "[CODE] main calls highest, count_at_or_above and average once for each gauge"
+- description: "[CODE] main calls read_readings, highest, count_at_or_above and average once for each gauge"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_main_calls_each_function_for_every_gauge

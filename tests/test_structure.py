@@ -34,7 +34,7 @@ def test_main_has_no_loops():
     loops = loops_in(defined["main"])
     assert not loops, (
         f"main still has {len(loops)} loop(s) in it: each loop belongs in one of the "
-        "three functions, and main calls the function instead"
+        "functions, and main calls the function instead"
     )
 
 
@@ -44,7 +44,7 @@ def test_main_calls_each_function_for_every_gauge():
     called = calls_in(defined["main"])
     short = [
         f"{name} ({called.count(name)} time(s))"
-        for name in ["highest", "count_at_or_above", "average"]
+        for name in ["read_readings", "highest", "count_at_or_above", "average"]
         if called.count(name) < 3
     ]
     assert not short, (
