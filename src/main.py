@@ -119,7 +119,7 @@ def main():
     print("Average:", total // len(cussewago))
     cussewago_peak = largest
 
-    # TODO 6: replace these comparisons with one call to highest, handed a
+    # TODO 6: replace these comparisons with one call to highest, passing it a
     # list of the three gauges' highest readings
     peak = meadville_peak
     if saegertown_peak > peak:

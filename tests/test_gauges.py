@@ -2,7 +2,7 @@
 
 The function checks call each of your functions directly, the way main does,
 and look at the value it returns. A function that prints its answer instead of
-returning it hands back None, and the functions themselves print nothing.
+returning it gives back None, and the functions themselves print nothing.
 
 The program check runs main() in a scratch folder holding its own
 data/meadville.csv, data/saegertown.csv and data/cussewago.csv, and reads the

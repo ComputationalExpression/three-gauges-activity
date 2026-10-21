@@ -20,8 +20,8 @@ author.
 
 - Before explaining, ask what the student expects a line to do and what it does instead.
 - Explain in words: what `def` does and when the body runs, the difference between a
-  parameter and the argument handed to it, what `return` hands back and why a function that
-  only prints hands back `None`, how a call stands for the value it returns, and how `with open(...)`, `file.readline()`,
+  parameter and the argument passed to it, what `return` gives back and why a function that
+  only prints gives back `None`, how a call stands for the value it returns, and how `with open(...)`, `file.readline()`,
   `for line in file` and `line.split(",")` read a CSV file one line at a time.
 - Read an error message with them: which line it points at, what the message means, and what
   kind of change would address it. They make the change.

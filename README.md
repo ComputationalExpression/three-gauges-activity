@@ -66,7 +66,7 @@ works only with its parameters, never with `meadville`, `saegertown` or `cussewa
 Then, in each gauge block in `main`, replace the reading loop with one call such as
 `meadville = read_readings("data/meadville.csv")`, delete the other three loops, and print what
 your functions return instead, such as `print("Highest:", highest(meadville))`. Replace the `peak` comparisons with one
-call to `highest`, handed a list of the three gauges' highest readings. When you are done, `main`
+call to `highest`, passing it a list of the three gauges' highest readings. When you are done, `main`
 has no loops in it.
 
 ### Example run
