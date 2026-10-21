@@ -2,8 +2,8 @@
 
 |Item |       |
 |:----|:------|
-|Released |Wednesday, October 21, in class |
-|Due |Monday, October 26, 9:50am |
+|Released |Friday, October 23, in class |
+|Due |Monday, October 26, 9:00am |
 |Progress |[![Grade](../../actions/workflows/main.yml/badge.svg?branch=main)](../../actions/workflows/main.yml) |
 
 Cussewago Creek meets French Creek in Meadville. This program reads a week of readings for
