@@ -2,7 +2,7 @@
 
 CMPSC 100: Computational Expression, Activity 6
 
-A week of readings from three stream gauges near Meadville, read from one CSV
+A summer of daily readings from three stream gauges near Meadville, read from one CSV
 file per gauge and reported the same way for each gauge. This program works,
 but it repeats the same loops three times. Move each one into a function,
 written once and called three times, without changing what the program prints.
@@ -33,7 +33,7 @@ def main():
     print("=" * 50)
 
     name = input("What is your name? ")
-    watch = int(input("What is the watch level this week? "))
+    watch = int(input("What is the watch level? "))
 
     print("Field notes by", name)
 

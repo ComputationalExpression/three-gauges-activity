@@ -6,7 +6,7 @@
 |Due |Monday, October 26, 9:00am |
 |Progress |[![Grade](../../actions/workflows/main.yml/badge.svg?branch=main)](../../actions/workflows/main.yml) |
 
-Cussewago Creek meets French Creek in Meadville. This program reads a week of readings for
+Cussewago Creek meets French Creek in Meadville. This program reads 100 days of readings for
 three gauges, French Creek at Meadville, French Creek upstream at Saegertown, and Cussewago
 Creek, from one CSV file each, and reports on them. It already works, but it repeats the same
 loops three times, once per gauge. Your job is
@@ -37,12 +37,12 @@ Specifically, by the end of this activity you should be able to:
 ## The data files
 
 Each gauge's readings are in its own CSV file in `data/`: a header line, `date,level`, then
-one line per day with the date and the level separated by a comma.
+one line per day for 100 days, with the date and the level separated by a comma.
 
 ```text
 date,level
-2026-06-01,31
-2026-06-02,34
+2026-06-01,40
+2026-06-02,43
 ```
 
 The readings are sample data. Run the program from the top folder of this repository, so that
@@ -79,25 +79,25 @@ $ uv run python src/main.py
 THREE GAUGES
 ==================================================
 What is your name? JJ
-What is the watch level this week? 40
+What is the watch level? 55
 Field notes by JJ
 ==================================================
 GAUGE: French Creek at Meadville
-Highest: 68
-Reached watch: 3
-Average: 43
+Highest: 71
+Reached watch: 29
+Average: 51
 ==================================================
 GAUGE: French Creek at Saegertown
-Highest: 57
-Reached watch: 3
-Average: 39
+Highest: 63
+Reached watch: 4
+Average: 41
 ==================================================
 GAUGE: Cussewago Creek
-Highest: 26
+Highest: 28
 Reached watch: 0
 Average: 17
 ==================================================
-Peak: 68
+Peak: 71
 ```
 
 The checks run your program against data files of their own, forgive extra spaces and letter
